@@ -1,0 +1,366 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--safe-top);
+  background:
+    radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--violet) 14%, transparent) 0 120px, transparent 121px),
+    radial-gradient(circle at 92% 30%, color-mix(in srgb, var(--coral) 16%, transparent) 0 90px, transparent 91px),
+    var(--cream);
+}
+
+.hero,
+.main,
+.footer {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
+.hero {
+  padding: 48px var(--gutter) 0;
+}
+
+.heroCard {
+  position: relative;
+  background: var(--ink);
+  color: var(--cream);
+  border: var(--border) solid var(--ink);
+  border-radius: var(--radius-xl);
+  padding: 30px 22px 24px;
+  box-shadow: var(--shadow-violet);
+}
+
+.heroEyes {
+  position: absolute;
+  top: -42px;
+  inset-inline-end: 22px;
+  width: 118px;
+}
+
+.heroSticker {
+  position: absolute;
+  top: -16px;
+  inset-inline-start: 18px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 12.5vw, 3.9rem);
+  line-height: 1;
+  color: var(--lime);
+  text-wrap: balance;
+}
+
+.tagline {
+  margin-top: 12px;
+  color: var(--text-on-ink-muted);
+  font-size: 1.05rem;
+  max-width: 32ch;
+}
+
+.main {
+  flex: 1 0 auto;
+  padding: 24px var(--gutter) 8px;
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.section {
+  position: relative;
+  border: var(--border) solid var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 16px 16px 18px;
+  box-shadow: var(--shadow-ink-sm);
+}
+
+.players {
+  background: var(--paper);
+}
+
+.categories {
+  background: var(--violet);
+  color: var(--cream);
+}
+
+.impostors {
+  background: var(--blush);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  min-height: 40px;
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.sectionCount {
+  font-size: 0.92rem;
+  opacity: 0.8;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sectionHead > :last-child {
+  margin-inline-start: auto;
+}
+
+.categories .sectionHead button {
+  --shadow-color: var(--ink);
+}
+
+/* Players */
+.emptyPlayers {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 12px 10px 14px;
+  border: 2px dashed color-mix(in srgb, var(--ink) 45%, transparent);
+  border-radius: var(--radius-md);
+  text-align: center;
+  color: var(--ink);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.emptyPlayers:active {
+  background: var(--cream-2);
+}
+
+.emptyEyes {
+  width: 86px;
+  margin-bottom: 6px;
+}
+
+.emptyEyes > svg {
+  width: 100%;
+}
+
+.emptyTitle {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.emptyHint {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.roster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rosterItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 3px;
+  padding-inline: 12px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+  font-weight: 500;
+  max-width: 100%;
+  min-height: 38px;
+}
+
+.rosterName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 14ch;
+}
+
+.rosterMore {
+  padding-inline-start: 12px;
+  background: var(--lavender);
+}
+
+/* Categories */
+.categoriesEmpty {
+  color: var(--lavender);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 2px solid var(--ink);
+  min-height: 38px;
+}
+
+.chipIcon {
+  color: var(--lime);
+  flex: 0 0 auto;
+}
+
+.chip[data-tone='lavender'] .chipIcon {
+  color: var(--tone-lavender);
+}
+
+.chip[data-tone='mint'] .chipIcon {
+  color: var(--tone-mint);
+}
+
+.chip[data-tone='peach'] .chipIcon {
+  color: var(--tone-peach);
+}
+
+.chip[data-tone='sky'] .chipIcon {
+  color: var(--tone-sky);
+}
+
+.chip[data-tone='sand'] .chipIcon {
+  color: var(--tone-sand);
+}
+
+.chip[data-tone='pink'] .chipIcon {
+  color: var(--tone-pink);
+}
+
+.chipMore {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--cream);
+}
+
+/* Impostors */
+.stepperRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stepperLabel {
+  font-weight: 500;
+  flex: 1 1 140px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+}
+
+.stepperValue {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.rule {
+  margin-top: 12px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+/* How to play */
+.howTo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px 14px;
+  border: 3px dashed var(--ink);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  color: var(--ink);
+  text-align: start;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.howTo:active {
+  transform: translate(2px, 2px);
+  background: var(--cream-2);
+}
+
+.howToIcon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 2px solid var(--ink);
+  background: var(--lime);
+}
+
+.howToText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.howToTitle {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+.howToHint {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.storageNote {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Footer */
+.footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  padding: 14px var(--gutter) calc(14px + var(--safe-bottom));
+  background: linear-gradient(to top, var(--cream) 72%, transparent);
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.blocked {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  text-align: center;
+}

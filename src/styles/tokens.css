@@ -1,0 +1,77 @@
+:root {
+  color-scheme: light;
+
+  /* Palette, used with discipline: ink = structure, lime = primary action,
+     coral = expressive accent, violet = secondary surfaces, cream = paper. */
+  --ink: #17132e;
+  --ink-2: #26204a;
+  --ink-3: #3a3170;
+  --lime: #d7ff3c;
+  --lime-2: #bde826;
+  --coral: #ff5c6c;
+  --coral-2: #e4445a;
+  --blush: #ffdcd6;
+  --violet: #6236e8;
+  --violet-2: #4d26c6;
+  --lavender: #e8dfff;
+  --cream: #fff4dd;
+  --cream-2: #f4e4c4;
+  --paper: #fffbf1;
+  --citrus: #f1ffb5;
+
+  /* Pastel tones for collectible category tiles. */
+  --tone-lavender: #dcd0f7;
+  --tone-mint: #dff4b4;
+  --tone-peach: #f9cdb5;
+  --tone-sky: #cfe6f4;
+  --tone-sand: #f7deaa;
+  --tone-pink: #f8cfdc;
+
+  --text: var(--ink);
+  --text-muted: #5a5379;
+  --text-on-ink: var(--cream);
+  --text-on-ink-muted: #bfb7e2;
+  --focus-ring: var(--violet);
+
+  --font-display: 'Secular One', 'Rubik', system-ui, sans-serif;
+  --font-body: 'Rubik', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+  --border: 3px;
+
+  /* Physical, printed-card shadows, offset to the bottom-right. */
+  --shadow-ink: 6px 6px 0 0 var(--ink);
+  --shadow-ink-sm: 4px 4px 0 0 var(--ink);
+  --shadow-ink-xs: 2px 2px 0 0 var(--ink);
+  --shadow-violet: 6px 6px 0 0 var(--violet);
+  --shadow-coral: 6px 6px 0 0 var(--coral);
+  --shadow-lime: 6px 6px 0 0 var(--lime);
+  --shadow-cream: 6px 6px 0 0 var(--cream);
+
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --dur-slow: 420ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-pop: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  --page-max: 540px;
+  --gutter: 18px;
+  --tap: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur: 1ms;
+    --dur-slow: 1ms;
+  }
+}

@@ -1,0 +1,154 @@
+.dialog {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: none;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  color: var(--ink);
+}
+
+.dialog[open]::backdrop {
+  animation: fadeIn var(--dur) var(--ease-out);
+}
+
+.closing::backdrop {
+  animation: fadeOut var(--dur) ease-in forwards;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, var(--page-max));
+  max-height: calc(100dvh - 18px);
+  margin-inline: auto;
+  background: var(--cream);
+  border: var(--border) solid var(--ink);
+  border-bottom: 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -8px 0 0 var(--violet);
+}
+
+.dialog[open] .panel {
+  animation: slideUp var(--dur-slow) var(--ease-out);
+}
+
+.closing .panel {
+  animation: slideDown var(--dur) ease-in forwards;
+}
+
+.cream {
+  background: var(--cream);
+}
+
+.violet {
+  background: var(--violet);
+  color: var(--cream);
+  box-shadow: 0 -8px 0 0 var(--lime);
+}
+
+.grip {
+  width: 56px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ink);
+  opacity: 0.35;
+  margin: 10px auto 0;
+}
+
+.violet .grip {
+  background: var(--cream);
+  opacity: 0.6;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px var(--gutter) 6px;
+}
+
+.heading {
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  line-height: 1.05;
+}
+
+.subtitle {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.toolbar {
+  padding: 4px var(--gutter) 10px;
+}
+
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px var(--gutter) 16px;
+}
+
+.footer {
+  flex: 0 0 auto;
+  padding: 12px var(--gutter) 14px;
+  border-top: 2px dashed color-mix(in srgb, var(--ink) 40%, transparent);
+}
+
+.violet .footer {
+  border-top-color: color-mix(in srgb, var(--cream) 50%, transparent);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,49 @@
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap);
+  height: var(--tap);
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.iconButton:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.iconButton:disabled {
+  opacity: 0.35;
+}
+
+.glyph {
+  display: inline-flex;
+}
+
+.glyph > svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ink {
+  background: var(--paper);
+}
+
+.light {
+  background: transparent;
+  color: var(--cream);
+  border-color: var(--cream);
+}
+
+.solid {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#17132e"/>
+  <rect x="64" y="228" width="384" height="220" rx="44" fill="#6236e8" stroke="#fff4dd" stroke-width="14"/>
+  <g>
+    <ellipse cx="176" cy="212" rx="86" ry="74" fill="#fffbf1" stroke="#17132e" stroke-width="12"/>
+    <ellipse cx="336" cy="212" rx="86" ry="74" fill="#fffbf1" stroke="#17132e" stroke-width="12"/>
+    <circle cx="186" cy="226" r="28" fill="#17132e"/>
+    <circle cx="346" cy="226" r="28" fill="#17132e"/>
+    <circle cx="196" cy="214" r="8" fill="#fffbf1"/>
+    <circle cx="356" cy="214" r="8" fill="#fffbf1"/>
+    <path d="M90 168 Q176 118 262 160" fill="none" stroke="#17132e" stroke-width="18" stroke-linecap="round"/>
+    <path d="M262 180 Q336 136 422 168" fill="none" stroke="#17132e" stroke-width="18" stroke-linecap="round"/>
+  </g>
+  <rect x="64" y="300" width="384" height="148" rx="44" fill="#6236e8"/>
+  <rect x="64" y="228" width="384" height="220" rx="44" fill="none" stroke="#fff4dd" stroke-width="14"/>
+  <text x="256" y="398" text-anchor="middle" font-family="Secular One, Rubik, Arial, sans-serif" font-size="96" fill="#d7ff3c">?</text>
+</svg>

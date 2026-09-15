@@ -1,0 +1,56 @@
+.steps {
+  display: grid;
+  gap: 28px;
+  padding: 16px 4px 12px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.badge {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 18px 14px 18px 14px;
+  background: var(--lime);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  line-height: 1;
+  box-shadow: var(--shadow-ink-xs);
+}
+
+.badge[data-step='2'] {
+  background: var(--tone-lavender);
+  border-radius: 14px 18px 14px 18px;
+}
+
+.badge[data-step='3'] {
+  background: var(--coral);
+  border-radius: 16px 14px 18px 16px;
+}
+
+.text {
+  min-width: 0;
+  padding-top: 4px;
+}
+
+.stepTitle {
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.stepBody {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}

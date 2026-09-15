@@ -1,0 +1,26 @@
+.root {
+  width: 150px;
+  height: auto;
+  overflow: visible;
+}
+
+.face {
+  fill: var(--ink);
+}
+
+.hole {
+  fill: var(--coral);
+  stroke: var(--cream);
+  stroke-width: 3;
+}
+
+.stick {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.spark {
+  fill: var(--cream);
+}

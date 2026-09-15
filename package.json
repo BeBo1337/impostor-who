@@ -1,0 +1,34 @@
+{
+  "name": "mi-hamitchaze",
+  "private": true,
+  "version": "1.0.0",
+  "description": "מי המתחזה? — משחק מסיבה בעברית לטלפון אחד",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate:words": "node scripts/validate-words.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^1.46.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24.13.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.6",
+    "vitest": "^3.2.7"
+  }
+}

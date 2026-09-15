@@ -1,0 +1,295 @@
+.screen {
+  --shadow-color: var(--violet);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: calc(12px + var(--safe-top)) var(--gutter) calc(18px + var(--safe-bottom));
+  background:
+    radial-gradient(circle at 85% 12%, color-mix(in srgb, var(--violet) 35%, transparent) 0 140px, transparent 141px),
+    var(--ink);
+  color: var(--cream);
+}
+
+.topBar,
+.stage {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.progress {
+  border: 2px solid var(--cream);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.stage {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  padding: 12px 0 6px;
+  animation: rise var(--dur-slow) var(--ease-out);
+}
+
+.passBlock {
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.passTo {
+  color: var(--text-on-ink-muted);
+  font-size: 1.1rem;
+}
+
+.playerName {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12vw, 3.5rem);
+  line-height: 1.05;
+  color: var(--lime);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  padding: 0 4px;
+}
+
+/* Sealed (public) card */
+.sealedCard {
+  position: relative;
+  margin-top: 36px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 36px 24px 30px;
+  border: var(--border) solid var(--cream);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(color-mix(in srgb, var(--cream) 22%, transparent) 2px, transparent 2.5px) 0 0 / 18px 18px,
+    var(--violet);
+  color: var(--cream);
+  text-align: center;
+  box-shadow: var(--shadow-cream);
+}
+
+.sealedEyes {
+  position: absolute;
+  top: -44px;
+  inset-inline-end: 14%;
+  width: 124px;
+}
+
+.sealedSticker {
+  position: absolute;
+  top: -14px;
+  inset-inline-start: 18px;
+}
+
+.sealedTitle {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.sealedCaption {
+  color: var(--lavender);
+  font-size: 1rem;
+}
+
+.action {
+  margin-top: 4px;
+}
+
+/* Revealed (private) card — same size, timing and motion for both roles. */
+.roleCard {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 30px 22px;
+  border: var(--border) solid var(--ink);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  color: var(--ink);
+  box-shadow: var(--shadow-lime);
+  animation: cardIn var(--dur-slow) var(--ease-out);
+}
+
+.roleCard[data-role='word'] {
+  background: var(--cream);
+}
+
+.roleCard[data-role='impostor'] {
+  background: var(--coral);
+}
+
+.roleLabel {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.secret {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 11vw, 3.6rem);
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  max-width: 100%;
+}
+
+.impostorTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 10vw, 3rem);
+  line-height: 1;
+}
+
+.mask {
+  width: 132px;
+  margin: -4px 0 -2px;
+}
+
+.roleNote {
+  font-weight: 500;
+  font-size: 1.05rem;
+  max-width: 28ch;
+}
+
+/* Complete */
+.complete {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  padding: calc(24px + var(--safe-top)) var(--gutter) calc(24px + var(--safe-bottom));
+  background: var(--violet);
+  color: var(--cream);
+  --shadow-color: var(--ink);
+}
+
+.completeCard {
+  position: relative;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 40px auto 0;
+  padding: 40px 22px 30px;
+  border: var(--border) solid var(--ink);
+  border-radius: var(--radius-xl);
+  background: var(--cream);
+  color: var(--ink);
+  text-align: center;
+  box-shadow: var(--shadow-ink);
+  animation: rise var(--dur-slow) var(--ease-out);
+}
+
+.completeEyes {
+  position: absolute;
+  top: -46px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+}
+
+.completeSticker {
+  position: absolute;
+  top: -14px;
+  inset-inline-start: 18px;
+}
+
+.completeTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 11vw, 3.2rem);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.completeBody {
+  margin-top: 14px;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  text-wrap: balance;
+}
+
+.starter {
+  margin-top: 22px;
+  padding: 14px 18px 14px;
+  border: var(--border) solid var(--ink);
+  border-radius: var(--radius-lg);
+  background: var(--violet);
+  color: var(--cream);
+  box-shadow: var(--shadow-ink-sm);
+  display: grid;
+  gap: 4px;
+  animation: rise var(--dur-slow) var(--ease-out) 120ms backwards;
+}
+
+.starterLabel {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--lavender);
+}
+
+.starterName {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 9vw, 2.7rem);
+  line-height: 1.05;
+  color: var(--lime);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.starterCaption {
+  font-size: 0.88rem;
+  color: var(--lavender);
+}
+
+.completeActions {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  display: grid;
+  gap: 14px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(-14deg) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

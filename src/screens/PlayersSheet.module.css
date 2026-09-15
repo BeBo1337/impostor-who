@@ -1,0 +1,98 @@
+.addRow {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: var(--tap);
+  padding: 0 16px;
+  border: var(--border) solid var(--ink);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ink);
+  box-shadow: inset 3px 3px 0 0 color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.input::placeholder {
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+  font-weight: 400;
+}
+
+.input:focus-visible {
+  outline-offset: 2px;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--coral-2);
+}
+
+.messages {
+  min-height: 28px;
+  padding-top: 6px;
+}
+
+.error {
+  color: var(--coral-2);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.empty {
+  padding: 22px 8px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 60px;
+  padding: 6px 8px 6px 6px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+}
+
+.name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 500;
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+
+.renameForm {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.renameForm .input {
+  flex: 1 1 140px;
+  min-height: 44px;
+}
+
+.renameForm .error {
+  flex: 1 1 100%;
+}
+
+.minHint {
+  margin-top: 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
