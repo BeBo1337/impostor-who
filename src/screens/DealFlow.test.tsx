@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { useEffect, useReducer, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { he } from '../copy/he';
 import { ARM_DELAY_MS, INITIAL_DEAL_STATE, dealReducer, type DealState } from '../game/dealReducer';
 import type { Round } from '../game/round';
 import { useConcealOnHide } from '../hooks/useConcealOnHide';
@@ -55,9 +56,10 @@ function Host({ onState }: { onState?: (state: DealState) => void }) {
   );
 }
 
-const revealButton = () => screen.getByRole('button', { name: /הצגת התפקיד שלי/ });
-const hideButton = () => screen.getByRole('button', { name: /הסתרה והמשך/ });
+const revealButton = () => screen.getByRole('button', { name: he.deal.reveal });
+const hideButton = () => screen.getByRole('button', { name: he.deal.hideAndContinue });
 const arm = () => act(() => vi.advanceTimersByTime(ARM_DELAY_MS + 10));
+const progress = (index: number) => he.deal.progress(index, round.players.length);
 
 function setVisibility(state: 'hidden' | 'visible') {
   Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => state });
@@ -76,12 +78,12 @@ describe('DealFlow', () => {
 
   it('shows a concealed handoff with public progress and no secret content', () => {
     render(<Host />);
-    expect(screen.getByText('העבירו את הטלפון ל…')).toBeInTheDocument();
+    expect(screen.getByText(he.deal.passTo)).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('אורי');
-    expect(screen.getAllByText('שחקן 1 מתוך 4').length).toBeGreaterThan(0);
+    expect(screen.getAllByText(progress(1)).length).toBeGreaterThan(0);
     expect(document.body.textContent).not.toContain(WORD);
     expect(document.body.textContent).not.toContain(HINT);
-    expect(document.body.textContent).not.toContain('המתחזה!');
+    expect(document.body.textContent).not.toContain(he.deal.impostorTitle);
   });
 
   it('ignores a reveal tap before the handoff is armed, then reveals the word for an ordinary player', () => {
@@ -92,7 +94,7 @@ describe('DealFlow', () => {
     arm();
     fireEvent.click(revealButton());
     expect(screen.getByText(WORD)).toBeInTheDocument();
-    expect(screen.getByText('המילה שלך')).toBeInTheDocument();
+    expect(screen.getByText(he.deal.yourWord)).toBeInTheDocument();
     expect(document.body.textContent).not.toContain(HINT);
   });
 
@@ -106,7 +108,7 @@ describe('DealFlow', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Dana');
     arm();
     fireEvent.click(revealButton());
-    expect(screen.getByText('אתה המתחזה!')).toBeInTheDocument();
+    expect(screen.getByText(he.deal.impostorTitle)).toBeInTheDocument();
     expect(screen.getByText(HINT)).toBeInTheDocument();
     expect(document.body.textContent).not.toContain(WORD);
   });
@@ -130,7 +132,7 @@ describe('DealFlow', () => {
     fireEvent.click(revealButton());
     fireEvent.click(hideButton());
     expect(screen.getByText(WORD)).toBeInTheDocument();
-    expect(screen.getAllByText('שחקן 1 מתוך 4').length).toBeGreaterThan(0);
+    expect(screen.getAllByText(progress(1)).length).toBeGreaterThan(0);
   });
 
   it('conceals the card when the page is hidden and requires the same player to reveal again', () => {
@@ -142,7 +144,7 @@ describe('DealFlow', () => {
     setVisibility('hidden');
     expect(document.body.textContent).not.toContain(WORD);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('אורי');
-    expect(screen.getAllByText('שחקן 1 מתוך 4').length).toBeGreaterThan(0);
+    expect(screen.getAllByText(progress(1)).length).toBeGreaterThan(0);
 
     setVisibility('visible');
     fireEvent.click(revealButton());
@@ -168,7 +170,7 @@ describe('DealFlow', () => {
     fireEvent.click(hideButton());
     expect(document.body.textContent).not.toContain(WORD);
     expect(document.body.textContent).not.toContain(HINT);
-    expect(screen.getByText('העבירו את הטלפון ל…')).toBeInTheDocument();
+    expect(screen.getByText(he.deal.passTo)).toBeInTheDocument();
   });
 
   it('keeps the same assignment across rerenders', () => {
@@ -179,22 +181,22 @@ describe('DealFlow', () => {
     fireEvent.click(screen.getByRole('button', { name: /rerender/ }));
     fireEvent.click(screen.getByRole('button', { name: /rerender/ }));
     expect(screen.getByText(WORD)).toBeInTheDocument();
-    expect(screen.getByText('המילה שלך')).toBeInTheDocument();
+    expect(screen.getByText(he.deal.yourWord)).toBeInTheDocument();
   });
 
   it('completes only after every player has viewed their card', () => {
     const states: DealState[] = [];
     render(<Host onState={(s) => states.push(s)} />);
     for (let i = 0; i < round.players.length; i += 1) {
-      expect(screen.queryByText('כל התפקידים חולקו!')).not.toBeInTheDocument();
+      expect(screen.queryByText(he.complete.title)).not.toBeInTheDocument();
       arm();
       fireEvent.click(revealButton());
       arm();
       fireEvent.click(hideButton());
     }
-    expect(screen.getByText('כל התפקידים חולקו!')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'סבב חדש' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'חזרה להגדרות' })).toBeInTheDocument();
+    expect(screen.getByText(he.complete.title)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: he.complete.newRound })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: he.complete.backToSetup })).toBeInTheDocument();
     expect(document.body.textContent).not.toContain(WORD);
     expect(document.body.textContent).not.toContain(HINT);
     expect(states.at(-1)?.status).toBe('complete');
@@ -208,10 +210,10 @@ describe('DealFlow', () => {
       arm();
       fireEvent.click(hideButton());
     }
-    const starterSection = screen.getByRole('region', { name: 'מתחילים עם' });
+    const starterSection = screen.getByRole('region', { name: he.complete.starterLabel });
     expect(starterSection).toHaveTextContent('גל');
-    expect(starterSection).toHaveTextContent('נבחר בהגרלה מבין כל השחקנים');
-    expect(document.body.textContent).not.toContain('המתחזה!');
+    expect(starterSection).toHaveTextContent(he.complete.starterCaption);
+    expect(document.body.textContent).not.toContain(he.deal.impostorTitle);
     expect(document.body.textContent).not.toContain(WORD);
     expect(document.body.textContent).not.toContain(HINT);
   });

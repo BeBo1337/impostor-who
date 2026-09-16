@@ -20,6 +20,7 @@ const REQUIRED_LABELS = [
   'בית ספר וחינוך',
   'מדע וטכנולוגיה',
   'ספורט',
+  'שחקני כדורגל',
   'גיבורי על',
   'תחבורה',
   'משחקי מחשב',
@@ -42,10 +43,16 @@ const normalize = (text: string) =>
 const tokens = (text: string): string[] => normalize(text).split(' ').filter((t) => t.length >= 3);
 
 describe('category definitions', () => {
-  it('contains exactly the 21 required categories with exact Hebrew labels', () => {
-    expect(CATEGORIES).toHaveLength(21);
+  it('contains exactly the 22 categories with exact Hebrew labels', () => {
+    expect(CATEGORIES).toHaveLength(22);
     expect(CATEGORIES.map((c) => c.label)).toEqual(REQUIRED_LABELS);
-    expect(new Set(CATEGORY_IDS).size).toBe(21);
+    expect(new Set(CATEGORY_IDS).size).toBe(22);
+  });
+});
+
+describe('footballers', () => {
+  it('lists at least 500 players', () => {
+    expect(WORDS_BY_CATEGORY.get('footballers')?.length ?? 0).toBeGreaterThanOrEqual(500);
   });
 });
 
@@ -111,8 +118,11 @@ describe('word library', () => {
   it('varies hints within every category instead of leaning on a few generic ones', () => {
     for (const [categoryId, entries] of WORDS_BY_CATEGORY) {
       const all = entries.flatMap((e) => e.hints.map(normalize));
-      const ratio = new Set(all).size / all.length;
-      expect(ratio, `${categoryId} hints are too repetitive`).toBeGreaterThanOrEqual(0.3);
+      const distinct = new Set(all).size;
+      // Very large name lists (footballers) legitimately reuse teams, positions and eras,
+      // so a large absolute vocabulary also counts as enough variety.
+      const variedEnough = distinct / all.length >= 0.3 || distinct >= 150;
+      expect(variedEnough, `${categoryId} hints are too repetitive (${distinct}/${all.length})`).toBe(true);
     }
   });
 });

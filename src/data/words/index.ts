@@ -7,6 +7,7 @@ import { colorsWords } from './colors';
 import { emotionsWords } from './emotions';
 import { everydayWords } from './everyday';
 import { foodWords } from './food';
+import { footballersWords } from './footballers';
 import { hobbiesWords } from './hobbies';
 import { internetWords } from './internet';
 import { kitchenWords } from './kitchen';
@@ -44,6 +45,7 @@ export const WORDS_BY_CATEGORY: ReadonlyMap<CategoryId, readonly WordEntry[]> = 
   ['school', schoolWords],
   ['science', scienceWords],
   ['sports', sportsWords],
+  ['footballers', footballersWords],
   ['superheroes', superheroesWords],
   ['transport', transportWords],
   ['videogames', videogamesWords],

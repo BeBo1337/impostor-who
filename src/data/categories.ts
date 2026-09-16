@@ -20,6 +20,7 @@ export const CATEGORIES: readonly Category[] = [
   { id: 'school', label: 'בית ספר וחינוך', tone: 'lavender' },
   { id: 'science', label: 'מדע וטכנולוגיה', tone: 'peach' },
   { id: 'sports', label: 'ספורט', tone: 'sand' },
+  { id: 'footballers', label: 'שחקני כדורגל', tone: 'mint' },
   { id: 'superheroes', label: 'גיבורי על', tone: 'pink' },
   { id: 'transport', label: 'תחבורה', tone: 'mint' },
   { id: 'videogames', label: 'משחקי מחשב', tone: 'lavender' },

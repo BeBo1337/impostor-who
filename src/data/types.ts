@@ -16,6 +16,7 @@ export type CategoryId =
   | 'school'
   | 'science'
   | 'sports'
+  | 'footballers'
   | 'superheroes'
   | 'transport'
   | 'videogames'

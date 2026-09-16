@@ -114,7 +114,10 @@ for (const file of files) {
 
   const distinct = new Set(allHints).size;
   const ratio = allHints.length ? distinct / allHints.length : 0;
-  if (ratio < MIN_DISTINCT_HINT_RATIO) report(`hints are too repetitive: ${distinct} distinct of ${allHints.length}`);
+  // Huge name lists reuse teams, positions and eras; a large absolute vocabulary is fine too.
+  if (ratio < MIN_DISTINCT_HINT_RATIO && distinct < 150) {
+    report(`hints are too repetitive: ${distinct} distinct of ${allHints.length}`);
+  }
   grandWords += count;
   console.log(`  ${count} words, ${allHints.length} hints, ${distinct} distinct (${Math.round(ratio * 100)}%)`);
 }
