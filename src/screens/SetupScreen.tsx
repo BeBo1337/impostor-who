@@ -18,6 +18,7 @@ export interface SetupScreenProps {
   storageAvailable: boolean;
   onOpenPlayers: () => void;
   onOpenCategories: () => void;
+  onOpenCustomWords: () => void;
   onOpenHowTo: () => void;
   onImpostorCountChange: (count: number) => void;
   onStart: () => void;
@@ -46,14 +47,18 @@ export function SetupScreen({
   storageAvailable,
   onOpenPlayers,
   onOpenCategories,
+  onOpenCustomWords,
   onOpenHowTo,
   onImpostorCountChange,
   onStart,
 }: SetupScreenProps) {
   const playersHeadingId = useId();
   const categoriesHeadingId = useId();
+  const customHeadingId = useId();
   const impostorsHeadingId = useId();
   const reasonId = useId();
+  const customCount = setup.customWords.length;
+  const customSelected = setup.categoryIds.includes('custom');
 
   const playerCount = setup.players.length;
   const max = maxImpostors(playerCount);
@@ -145,6 +150,30 @@ export function SetupScreen({
               ) : null}
             </ul>
           )}
+        </section>
+
+        <section className={[styles.section, styles.custom].join(' ')} aria-labelledby={customHeadingId}>
+          <div className={styles.sectionHead}>
+            <h2 id={customHeadingId} className={styles.sectionTitle}>
+              {he.setup.customTitle}
+            </h2>
+            <span className={styles.sectionCount}>{customCount > 0 ? he.counts.words(customCount) : null}</span>
+            <Button
+              variant={customCount === 0 ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={onOpenCustomWords}
+              icon={customCount === 0 ? <PlusIcon /> : <PencilIcon />}
+            >
+              {customCount === 0 ? he.setup.customAdd : he.setup.customEdit}
+            </Button>
+          </div>
+          <p className={styles.customStatus}>
+            {customCount === 0
+              ? he.setup.customEmpty
+              : customSelected
+                ? he.setup.customIncluded
+                : he.setup.customNotIncluded}
+          </p>
         </section>
 
         <section className={[styles.section, styles.impostors].join(' ')} aria-labelledby={impostorsHeadingId}>

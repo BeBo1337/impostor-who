@@ -21,10 +21,16 @@ export function clampImpostorCount(count: number, playerCount: number): number {
   return Math.min(Math.max(1, Math.trunc(count)), max);
 }
 
+/** The selected categories that actually have words to draw from. */
+export function playableCategoryIds(categoryIds: readonly CategoryId[], customWordCount: number): CategoryId[] {
+  return categoryIds.filter((id) => id !== 'custom' || customWordCount > 0);
+}
+
 export interface SetupSnapshot {
   readonly players: readonly Player[];
   readonly categoryIds: readonly CategoryId[];
   readonly impostorCount: number;
+  readonly customWords?: readonly unknown[] | undefined;
 }
 
 export type StartCheck =
@@ -34,7 +40,9 @@ export type StartCheck =
 /** Whether a round can start, and if not, the first reason to show the user. */
 export function checkCanStart(setup: SetupSnapshot): StartCheck {
   if (setup.players.length < MIN_PLAYERS) return { ok: false, reason: 'players' };
-  if (setup.categoryIds.length === 0) return { ok: false, reason: 'categories' };
+  if (playableCategoryIds(setup.categoryIds, setup.customWords?.length ?? 0).length === 0) {
+    return { ok: false, reason: 'categories' };
+  }
   const max = maxImpostors(setup.players.length);
   if (!Number.isInteger(setup.impostorCount) || setup.impostorCount < 1 || setup.impostorCount > max) {
     return { ok: false, reason: 'impostors' };

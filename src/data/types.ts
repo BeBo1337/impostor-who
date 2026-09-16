@@ -20,7 +20,9 @@ export type CategoryId =
   | 'superheroes'
   | 'transport'
   | 'videogames'
-  | 'nature';
+  | 'nature'
+  /** The players' own words, entered in the app and kept in local storage. */
+  | 'custom';
 
 /** Pastel tone of a category tile. Maps to `--tone-*` tokens in CSS. */
 export type Tone = 'lavender' | 'mint' | 'peach' | 'sky' | 'sand' | 'pink';

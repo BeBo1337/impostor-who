@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { CategoryId, WordEntry } from '../data/types';
 import { WORDS_BY_CATEGORY } from '../data/words';
+import { buildLibrary } from './customWords';
 import type { Player } from './players';
 import { createSeededRng } from './random';
 import { createRound, isImpostor, roleFor, starterOf } from './round';
@@ -134,6 +135,23 @@ describe('createRound', () => {
       custom,
     );
     expect(round.entry.id).toBe('x-1');
+  });
+
+  it('draws from the players own words when the custom category is enabled', () => {
+    const library = buildLibrary([
+      { id: 'w1', word: 'הכלב של השכנים', hints: ['נביחות', 'לילה'] },
+      { id: 'w2', word: 'המורה לחשבון', hints: ['שיעורי בית'] },
+    ]);
+    const rng = createSeededRng(9);
+    const seen = new Set<string>();
+    for (let i = 0; i < 20; i += 1) {
+      const { round } = createRound({ players: roster(3), categoryIds: ['custom'], impostorCount: 1 }, EMPTY_WORD_SESSION, rng, library);
+      expect(round.entry.categoryId).toBe('custom');
+      expect(['הכלב של השכנים', 'המורה לחשבון']).toContain(round.entry.word);
+      expect(round.entry.hints).toContain(round.hint);
+      seen.add(round.entry.word);
+    }
+    expect(seen.size).toBe(2);
   });
 
   it('rejects invalid input', () => {

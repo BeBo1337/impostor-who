@@ -20,6 +20,7 @@ export const he = {
     players: (n: number) => plural(n, 'שחקן אחד', 'שני שחקנים', (k) => `${k} שחקנים`),
     impostors: (n: number) => plural(n, 'מתחזה אחד', 'שני מתחזים', (k) => `${k} מתחזים`),
     categories: countCategories,
+    words: (n: number) => plural(n, 'מילה אחת', 'שתי מילים', (k) => `${k} מילים`),
   },
 
   setup: {
@@ -34,6 +35,13 @@ export const he = {
     categoriesChoose: 'בחירה',
     categoriesEmpty: 'לא נבחרו קטגוריות.',
     categoriesSelected: (n: number, total: number) => `${n} מתוך ${total}`,
+
+    customTitle: 'מילים משלכם',
+    customAdd: 'הוספת מילים',
+    customEdit: 'עריכה',
+    customEmpty: 'הוסיפו מילים וביטויים משלכם, והם יופיעו כקטגוריה נוספת בבחירת הקטגוריות.',
+    customIncluded: 'נבחרו לסבב הבא',
+    customNotIncluded: 'לא נבחרו לסבב. אפשר לבחור אותן יחד עם הקטגוריות.',
 
     impostorsTitle: 'מתחזים',
     impostorsLabel: 'כמה מתחזים בסבב?',
@@ -95,6 +103,36 @@ export const he = {
       empty: 'כתבו שם לפני ההוספה.',
       tooLong: (max: number) => `השם ארוך מדי. עד ${max} תווים.`,
       duplicate: 'כבר יש שחקן בשם הזה.',
+    },
+  },
+
+  custom: {
+    title: 'מילים משלכם',
+    intro: 'המילים שלכם מצטרפות כקטגוריה ״המילים שלנו״. לכל מילה צריך לפחות רמז אחד למתחזה.',
+    wordLabel: 'מילה',
+    wordPlaceholder: 'מילה או ביטוי',
+    hintsLabel: 'רמזים למתחזה',
+    hintsPlaceholder: 'רמז אחד או יותר, מופרדים בפסיק',
+    hintsHelp: 'רמז טוב הוא אסוציאציה רחבה, לא הגדרה של המילה.',
+    add: 'הוספה',
+    done: 'סיום',
+    editOf: (word: string) => `עריכת ${word}`,
+    removeOf: (word: string) => `הסרת ${word}`,
+    save: 'שמירה',
+    cancel: 'ביטול',
+    listEmpty: 'עדיין אין מילים. המילה הראשונה שתוסיפו תפעיל את הקטגוריה.',
+    tileEmpty: 'עדיין אין מילים',
+    added: (word: string) => `נוספה המילה ${word}`,
+    removed: (word: string) => `הוסרה המילה ${word}`,
+    updated: (word: string) => `המילה ${word} עודכנה`,
+    errors: {
+      emptyWord: 'כתבו מילה לפני ההוספה.',
+      wordTooLong: (max: number) => `המילה ארוכה מדי. עד ${max} תווים.`,
+      duplicate: 'המילה הזאת כבר ברשימה.',
+      noHints: 'הוסיפו לפחות רמז אחד למתחזה.',
+      hintTooLong: (max: number) => `אחד הרמזים ארוך מדי. עד ${max} תווים.`,
+      hintIsWord: 'הרמז לא יכול להיות המילה עצמה או חלק ממנה.',
+      tooMany: (max: number) => `אפשר לשמור עד ${max} מילים.`,
     },
   },
 

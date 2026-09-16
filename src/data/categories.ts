@@ -2,6 +2,7 @@ import type { Category, CategoryId } from './types';
 
 export type { Category, CategoryId } from './types';
 
+/** Built-in categories, in display order. The players' own words live in CUSTOM_CATEGORY. */
 export const CATEGORIES: readonly Category[] = [
   { id: 'everyday', label: 'חפצים יומיומיים', tone: 'mint' },
   { id: 'celebrities', label: 'אנשים מפורסמים', tone: 'lavender' },
@@ -11,7 +12,7 @@ export const CATEGORIES: readonly Category[] = [
   { id: 'colors', label: 'צבעים וצורות', tone: 'pink' },
   { id: 'places', label: 'מדינות וערים', tone: 'mint' },
   { id: 'emotions', label: 'רגשות ותחושות', tone: 'peach' },
-  { id: 'hobbies', label: 'תחביבים ופעילויות', tone: 'lavender' },
+  { id: 'hobbies', label: 'תחביבים ופעילות', tone: 'lavender' },
   { id: 'internet', label: 'תרבות אינטרנט', tone: 'sky' },
   { id: 'kitchen', label: 'מטבח ובישול', tone: 'sand' },
   { id: 'screen', label: 'סרטים וסדרות', tone: 'pink' },
@@ -27,9 +28,13 @@ export const CATEGORIES: readonly Category[] = [
   { id: 'nature', label: 'מזג אוויר וטבע', tone: 'sky' },
 ];
 
+/** The category that holds the words players type in themselves. */
+export const CUSTOM_CATEGORY: Category = { id: 'custom', label: 'המילים שלנו', tone: 'sand' };
+
+/** Ids of the built-in categories only. */
 export const CATEGORY_IDS: readonly CategoryId[] = CATEGORIES.map((c) => c.id);
 
-const BY_ID: ReadonlyMap<CategoryId, Category> = new Map(CATEGORIES.map((c) => [c.id, c]));
+const BY_ID: ReadonlyMap<CategoryId, Category> = new Map([...CATEGORIES, CUSTOM_CATEGORY].map((c) => [c.id, c]));
 
 export function getCategory(id: CategoryId): Category {
   const found = BY_ID.get(id);

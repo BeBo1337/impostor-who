@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { ConfirmDialog } from './components/ui/ConfirmDialog';
 import { Toast } from './components/ui/Toast';
 import { he } from './copy/he';
 import type { CategoryId } from './data/types';
+import { buildLibrary } from './game/customWords';
 import { ARM_DELAY_MS, INITIAL_DEAL_STATE, dealReducer } from './game/dealReducer';
 import { newId } from './game/ids';
+import { defaultRng } from './game/random';
 import { checkCanStart, clampImpostorCount } from './game/rules';
 import { createRound } from './game/round';
 import { setupReducer } from './game/setupReducer';
@@ -13,13 +15,14 @@ import { useBackGuard } from './hooks/useBackGuard';
 import { useConcealOnHide } from './hooks/useConcealOnHide';
 import { useToast } from './hooks/useToast';
 import { CategoriesSheet } from './screens/CategoriesSheet';
+import { CustomWordsSheet } from './screens/CustomWordsSheet';
 import { DealFlow } from './screens/DealFlow';
 import { HowToSheet } from './screens/HowToSheet';
 import { PlayersSheet } from './screens/PlayersSheet';
 import { SetupScreen } from './screens/SetupScreen';
 import { getSafeStorage, loadSetup, saveSetup, type StorageLike } from './storage/setupStorage';
 
-type SheetName = 'none' | 'players' | 'categories' | 'howTo';
+type SheetName = 'none' | 'players' | 'categories' | 'customWords' | 'howTo';
 
 export function App() {
   const storageRef = useRef<StorageLike | null | undefined>(undefined);
@@ -33,19 +36,22 @@ export function App() {
   const [exitOpen, setExitOpen] = useState(false);
   const [toast, showToast] = useToast();
 
-  // Only the roster and preferences persist. Rounds live in memory alone.
+  // Only the roster, preferences and the players' own words persist. Rounds live in memory alone.
   useEffect(() => {
     saveSetup(setup, storage);
   }, [setup, storage]);
+
+  // Built-in categories plus the players' own words as the "custom" category.
+  const library = useMemo(() => buildLibrary(setup.customWords), [setup.customWords]);
 
   const startCheck = checkCanStart(setup);
 
   const startRound = useCallback(() => {
     if (!checkCanStart(setup).ok) return;
-    const created = createRound(setup, wordSession.current);
+    const created = createRound(setup, wordSession.current, defaultRng, library);
     wordSession.current = created.session;
     dispatchDeal({ type: 'START_ROUND', round: created.round });
-  }, [setup]);
+  }, [setup, library]);
 
   // A freshly shown handoff or reveal screen ignores its primary tap briefly.
   useEffect(() => {
@@ -92,6 +98,11 @@ export function App() {
     dispatchSetup({ type: 'SET_CATEGORIES', categoryIds });
     setSheet('none');
   };
+  const addCustomWord = (word: string, hints: readonly string[]) =>
+    dispatchSetup({ type: 'ADD_CUSTOM_WORD', word: { id: newId('word'), word, hints } });
+  const updateCustomWord = (id: string, word: string, hints: readonly string[]) =>
+    dispatchSetup({ type: 'UPDATE_CUSTOM_WORD', id, word, hints });
+  const removeCustomWord = (id: string) => dispatchSetup({ type: 'REMOVE_CUSTOM_WORD', id });
 
   return (
     <>
@@ -103,6 +114,7 @@ export function App() {
             storageAvailable={storage !== null}
             onOpenPlayers={() => setSheet('players')}
             onOpenCategories={() => setSheet('categories')}
+            onOpenCustomWords={() => setSheet('customWords')}
             onOpenHowTo={() => setSheet('howTo')}
             onImpostorCountChange={(count) => dispatchSetup({ type: 'SET_IMPOSTOR_COUNT', count })}
             onStart={startRound}
@@ -120,7 +132,16 @@ export function App() {
             open={sheet === 'categories'}
             onClose={() => setSheet('none')}
             selectedIds={setup.categoryIds}
+            customWordCount={setup.customWords.length}
             onConfirm={setCategories}
+          />
+          <CustomWordsSheet
+            open={sheet === 'customWords'}
+            onClose={() => setSheet('none')}
+            words={setup.customWords}
+            onAdd={addCustomWord}
+            onUpdate={updateCustomWord}
+            onRemove={removeCustomWord}
           />
         </>
       ) : (

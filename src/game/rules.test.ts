@@ -74,4 +74,15 @@ describe('checkCanStart', () => {
   it('accepts a valid setup', () => {
     expect(checkCanStart({ players: players(7), categoryIds, impostorCount: 2 })).toEqual({ ok: true });
   });
+
+  it('counts the custom category only when it has words', () => {
+    const custom = ['custom'] as const;
+    expect(checkCanStart({ players: players(4), categoryIds: custom, impostorCount: 1, customWords: [] })).toEqual({
+      ok: false,
+      reason: 'categories',
+    });
+    expect(checkCanStart({ players: players(4), categoryIds: custom, impostorCount: 1, customWords: [{}] })).toEqual({
+      ok: true,
+    });
+  });
 });

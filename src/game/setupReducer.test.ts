@@ -5,13 +5,15 @@ const withPlayers = (n: number, impostorCount = 1): SetupState => ({
   players: Array.from({ length: n }, (_, i) => ({ id: `p${i}`, name: `שחקן ${i + 1}` })),
   categoryIds: ['food'],
   impostorCount,
+  customWords: [],
 });
 
 describe('setupReducer', () => {
-  it('starts with an empty roster, one impostor and the three default categories', () => {
+  it('starts with an empty roster, one impostor, the three default categories and no custom words', () => {
     expect(DEFAULT_SETUP.players).toEqual([]);
     expect(DEFAULT_SETUP.impostorCount).toBe(1);
     expect(DEFAULT_SETUP.categoryIds).toEqual(['everyday', 'celebrities', 'food']);
+    expect(DEFAULT_SETUP.customWords).toEqual([]);
   });
 
   it('adding players raises the maximum but never the configured count', () => {
@@ -48,8 +50,41 @@ describe('setupReducer', () => {
     expect(same).toBe(state);
   });
 
-  it('deduplicates category ids', () => {
-    const state = setupReducer(DEFAULT_SETUP, { type: 'SET_CATEGORIES', categoryIds: ['food', 'food', 'music'] });
+  it('deduplicates category ids and drops the custom category while it has no words', () => {
+    const state = setupReducer(DEFAULT_SETUP, { type: 'SET_CATEGORIES', categoryIds: ['food', 'food', 'music', 'custom'] });
     expect(state.categoryIds).toEqual(['food', 'music']);
+  });
+
+  it('switches the custom category on with the first custom word', () => {
+    const state = setupReducer(withPlayers(3), {
+      type: 'ADD_CUSTOM_WORD',
+      word: { id: 'w1', word: 'הכלב של השכנים', hints: ['נביחות'] },
+    });
+    expect(state.customWords).toHaveLength(1);
+    expect(state.categoryIds).toEqual(['food', 'custom']);
+    // A second word keeps the selection as it is.
+    const again = setupReducer(state, { type: 'ADD_CUSTOM_WORD', word: { id: 'w2', word: 'עוד', hints: ['רמז'] } });
+    expect(again.categoryIds).toEqual(['food', 'custom']);
+  });
+
+  it('updates a custom word in place and deselects the category when the last word goes', () => {
+    let state = setupReducer(withPlayers(3), {
+      type: 'ADD_CUSTOM_WORD',
+      word: { id: 'w1', word: 'מילה', hints: ['רמז'] },
+    });
+    state = setupReducer(state, { type: 'UPDATE_CUSTOM_WORD', id: 'w1', word: 'מילה אחרת', hints: ['רמז', 'עוד רמז'] });
+    expect(state.customWords).toEqual([{ id: 'w1', word: 'מילה אחרת', hints: ['רמז', 'עוד רמז'] }]);
+    state = setupReducer(state, { type: 'REMOVE_CUSTOM_WORD', id: 'w1' });
+    expect(state.customWords).toEqual([]);
+    expect(state.categoryIds).toEqual(['food']);
+  });
+
+  it('lets the custom category be chosen once words exist', () => {
+    const withWord = setupReducer(withPlayers(3), {
+      type: 'ADD_CUSTOM_WORD',
+      word: { id: 'w1', word: 'מילה', hints: ['רמז'] },
+    });
+    const onlyCustom = setupReducer(withWord, { type: 'SET_CATEGORIES', categoryIds: ['custom'] });
+    expect(onlyCustom.categoryIds).toEqual(['custom']);
   });
 });

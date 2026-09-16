@@ -143,6 +143,47 @@
   overflow-wrap: anywhere;
 }
 
+/* The players' own words span the full row so it reads as a special, editable set. */
+.customCell {
+  grid-column: 1 / -1;
+}
+
+.customTile {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 84px;
+  gap: 14px;
+  padding: 12px 14px;
+  border-style: dashed;
+}
+
+.customTile[data-selected='true'] {
+  border-style: solid;
+}
+
+.customTile[aria-disabled='true'] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.customTile .badge {
+  margin-top: 0;
+  flex: 0 0 auto;
+}
+
+.customText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding-inline-end: 34px;
+}
+
+.subLabel {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 .tile[data-tone='lavender'] {
   --tone: var(--tone-lavender);
 }

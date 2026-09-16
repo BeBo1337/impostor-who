@@ -88,6 +88,16 @@
   background: var(--blush);
 }
 
+.custom {
+  background: var(--citrus);
+}
+
+.customStatus {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
 .sectionHead {
   display: flex;
   align-items: center;
