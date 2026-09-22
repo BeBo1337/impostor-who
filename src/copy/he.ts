@@ -99,6 +99,10 @@ export const he = {
     added: (name: string) => `נוסף לרשימה: ${name}`,
     removed: (name: string) => `הוסר מהרשימה: ${name}`,
     renamed: (name: string) => `השם עודכן ל־${name}`,
+    reorderHint: 'הסדר כאן הוא סדר העברת הטלפון. גררו את הידית כדי לשנות אותו.',
+    reorderOf: (name: string, position: number, total: number) =>
+      `שינוי המיקום של ${name}, כרגע ${position} מתוך ${total}. גררו, או הזיזו עם החצים למעלה ולמטה.`,
+    moved: (name: string, position: number, total: number) => `${name} עבר למקום ${position} מתוך ${total}`,
     errors: {
       empty: 'כתבו שם לפני ההוספה.',
       tooLong: (max: number) => `השם ארוך מדי. עד ${max} תווים.`,

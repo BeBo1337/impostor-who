@@ -50,6 +50,18 @@ describe('setupReducer', () => {
     expect(same).toBe(state);
   });
 
+  it('reorders the handout order without touching the impostor count', () => {
+    const state = setupReducer(withPlayers(6, 2), { type: 'MOVE_PLAYER', id: 'p4', toIndex: 0 });
+    expect(state.players.map((p) => p.id)).toEqual(['p4', 'p0', 'p1', 'p2', 'p3', 'p5']);
+    expect(state.impostorCount).toBe(2);
+  });
+
+  it('ignores moves that change nothing', () => {
+    const state = withPlayers(4);
+    expect(setupReducer(state, { type: 'MOVE_PLAYER', id: 'p2', toIndex: 2 })).toBe(state);
+    expect(setupReducer(state, { type: 'MOVE_PLAYER', id: 'gone', toIndex: 0 })).toBe(state);
+  });
+
   it('deduplicates category ids and drops the custom category while it has no words', () => {
     const state = setupReducer(DEFAULT_SETUP, { type: 'SET_CATEGORIES', categoryIds: ['food', 'food', 'music', 'custom'] });
     expect(state.categoryIds).toEqual(['food', 'music']);

@@ -48,13 +48,27 @@
   color: var(--text-muted);
 }
 
+.reorderHint {
+  padding: 0 4px 6px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 .list {
   display: grid;
   gap: 8px;
   padding-top: 4px;
 }
 
+/* While a row is held, nothing else in the list should select or highlight. */
+.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grabbing;
+}
+
 .row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -63,6 +77,41 @@
   border: 2px solid var(--ink);
   border-radius: var(--radius-md);
   background: var(--paper);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* The row under the finger follows it directly, so it must not lag behind a transition. */
+.held {
+  z-index: 2;
+  transition: none;
+  box-shadow: var(--shadow-ink-sm);
+}
+
+.handle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: 32px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: color-mix(in srgb, var(--ink) 45%, transparent);
+  cursor: grab;
+  /* The handle owns the gesture; the sheet must not scroll while dragging from it. */
+  touch-action: none;
+}
+
+.held .handle {
+  cursor: grabbing;
+  color: var(--ink);
+}
+
+.handleGlyph {
+  display: inline-flex;
 }
 
 .name {

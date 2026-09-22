@@ -75,6 +75,24 @@ export function validateName(
   return { ok: true, name };
 }
 
+/**
+ * Moves one player to a new position, keeping everyone else in order.
+ * The roster order is the order the phone is passed in, so this is the
+ * only thing that decides who hands the phone to whom.
+ * Returns the same array when the move would change nothing.
+ */
+export function movePlayer(roster: readonly Player[], id: string, toIndex: number): readonly Player[] {
+  const from = roster.findIndex((p) => p.id === id);
+  if (from === -1) return roster;
+  const to = Math.min(Math.max(Math.trunc(toIndex), 0), roster.length - 1);
+  if (to === from) return roster;
+  const next = [...roster];
+  const [moved] = next.splice(from, 1);
+  if (!moved) return roster;
+  next.splice(to, 0, moved);
+  return next;
+}
+
 export const AVATAR_TONE_COUNT = 6;
 
 /** Stable avatar colour index derived from the player's id. */

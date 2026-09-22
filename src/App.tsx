@@ -94,6 +94,7 @@ export function App() {
     if (nextCount < setup.impostorCount) showToast(he.setup.impostorsClamped(nextCount));
     dispatchSetup({ type: 'REMOVE_PLAYER', id });
   };
+  const movePlayer = (id: string, toIndex: number) => dispatchSetup({ type: 'MOVE_PLAYER', id, toIndex });
   const setCategories = (categoryIds: CategoryId[]) => {
     dispatchSetup({ type: 'SET_CATEGORIES', categoryIds });
     setSheet('none');
@@ -127,6 +128,7 @@ export function App() {
             onAdd={addPlayer}
             onRename={renamePlayer}
             onRemove={removePlayer}
+            onMove={movePlayer}
           />
           <CategoriesSheet
             open={sheet === 'categories'}

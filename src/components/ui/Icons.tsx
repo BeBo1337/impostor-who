@@ -1,4 +1,16 @@
-import { Check, ChevronDown, CircleHelp, Eye, EyeOff, Minus, Pencil, Plus, X, type LucideIcon } from 'lucide-react';
+import {
+  Check,
+  ChevronDown,
+  CircleHelp,
+  Eye,
+  EyeOff,
+  GripVertical,
+  Minus,
+  Pencil,
+  Plus,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 
 export interface IconProps {
   size?: number | undefined;
@@ -24,3 +36,4 @@ export const ChevronDownIcon = wrap(ChevronDown, 'ChevronDownIcon');
 export const EyeIcon = wrap(Eye, 'EyeIcon');
 export const EyeOffIcon = wrap(EyeOff, 'EyeOffIcon');
 export const HelpIcon = wrap(CircleHelp, 'HelpIcon');
+export const GripIcon = wrap(GripVertical, 'GripIcon');

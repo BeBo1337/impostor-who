@@ -1,12 +1,13 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { Avatar } from '../components/ui/Avatar';
 import { Button } from '../components/ui/Button';
 import { IconButton } from '../components/ui/IconButton';
-import { CheckIcon, CloseIcon, PencilIcon, PlusIcon } from '../components/ui/Icons';
+import { CheckIcon, CloseIcon, GripIcon, PencilIcon, PlusIcon } from '../components/ui/Icons';
 import { Sheet } from '../components/ui/Sheet';
 import { he } from '../copy/he';
 import { MAX_NAME_LENGTH, validateName, type NameError, type Player } from '../game/players';
 import { MIN_PLAYERS } from '../game/rules';
+import { useDragSort } from '../hooks/useDragSort';
 import styles from './PlayersSheet.module.css';
 
 export interface PlayersSheetProps {
@@ -16,6 +17,8 @@ export interface PlayersSheetProps {
   onAdd: (name: string) => void;
   onRename: (id: string, name: string) => void;
   onRemove: (id: string) => void;
+  /** Reorders the roster, which is also the order the phone is passed in. */
+  onMove: (id: string, toIndex: number) => void;
 }
 
 function errorText(error: NameError): string {
@@ -31,7 +34,7 @@ function errorText(error: NameError): string {
   }
 }
 
-export function PlayersSheet({ open, onClose, players, onAdd, onRename, onRemove }: PlayersSheetProps) {
+export function PlayersSheet({ open, onClose, players, onAdd, onRename, onRemove, onMove }: PlayersSheetProps) {
   const inputId = useId();
   const errorId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -85,6 +88,29 @@ export function PlayersSheet({ open, onClose, players, onAdd, onRename, onRemove
     setEditingId(null);
     setAnnouncement(he.players.renamed(name));
   };
+
+  const handleMove = (player: Player, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= players.length) return;
+    onMove(player.id, toIndex);
+    setAnnouncement(he.players.moved(player.name, toIndex + 1, players.length));
+  };
+
+  // Arrow keys give the same reordering to anyone not using a pointer.
+  const handleMoveKey = (event: ReactKeyboardEvent, player: Player, index: number) => {
+    const step = event.key === 'ArrowUp' ? -1 : event.key === 'ArrowDown' ? 1 : 0;
+    if (step === 0) return;
+    event.preventDefault();
+    handleMove(player, index + step);
+  };
+
+  const sort = useDragSort({
+    listRef,
+    onDrop: (from, to) => {
+      const player = players[from];
+      if (player) handleMove(player, to);
+    },
+  });
+  const reorderable = players.length > 1;
 
   return (
     <Sheet
@@ -145,31 +171,55 @@ export function PlayersSheet({ open, onClose, players, onAdd, onRename, onRemove
       {players.length === 0 ? (
         <p className={styles.empty}>{he.players.listEmpty}</p>
       ) : (
-        <ol className={styles.list} ref={listRef}>
-          {players.map((player) => (
-            <li key={player.id} className={styles.row}>
-              {editingId === player.id ? (
-                <RenameForm
-                  player={player}
-                  players={players}
-                  onSave={(name) => handleRename(player, name)}
-                  onCancel={() => setEditingId(null)}
-                />
-              ) : (
-                <>
-                  <Avatar id={player.id} name={player.name} />
-                  <bdi className={styles.name}>{player.name}</bdi>
-                  <IconButton aria-label={he.players.renameOf(player.name)} onClick={() => setEditingId(player.id)}>
-                    <PencilIcon />
-                  </IconButton>
-                  <IconButton aria-label={he.players.removeOf(player.name)} onClick={() => handleRemove(player)}>
-                    <CloseIcon />
-                  </IconButton>
-                </>
-              )}
-            </li>
-          ))}
-        </ol>
+        <>
+          {reorderable ? <p className={styles.reorderHint}>{he.players.reorderHint}</p> : null}
+          <ol className={[styles.list, sort.activeIndex !== null ? styles.dragging : null].filter(Boolean).join(' ')} ref={listRef}>
+            {players.map((player, index) => {
+              const offset = sort.translateFor(index);
+              const held = sort.activeIndex === index;
+              return (
+                <li
+                  key={player.id}
+                  className={[styles.row, held ? styles.held : null].filter(Boolean).join(' ')}
+                  style={offset === 0 && !held ? undefined : { transform: `translateY(${offset}px)` }}
+                >
+                  {editingId === player.id ? (
+                    <RenameForm
+                      player={player}
+                      players={players}
+                      onSave={(name) => handleRename(player, name)}
+                      onCancel={() => setEditingId(null)}
+                    />
+                  ) : (
+                    <>
+                      {reorderable ? (
+                        <button
+                          type="button"
+                          className={styles.handle}
+                          aria-label={he.players.reorderOf(player.name, index + 1, players.length)}
+                          onKeyDown={(event) => handleMoveKey(event, player, index)}
+                          {...sort.handleProps(index)}
+                        >
+                          <span className={styles.handleGlyph} aria-hidden="true">
+                            <GripIcon size={22} />
+                          </span>
+                        </button>
+                      ) : null}
+                      <Avatar id={player.id} name={player.name} />
+                      <bdi className={styles.name}>{player.name}</bdi>
+                      <IconButton aria-label={he.players.renameOf(player.name)} onClick={() => setEditingId(player.id)}>
+                        <PencilIcon />
+                      </IconButton>
+                      <IconButton aria-label={he.players.removeOf(player.name)} onClick={() => handleRemove(player)}>
+                        <CloseIcon />
+                      </IconButton>
+                    </>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </>
       )}
       {players.length > 0 && players.length < MIN_PLAYERS ? <p className={styles.minHint}>{he.players.minHint}</p> : null}
     </Sheet>

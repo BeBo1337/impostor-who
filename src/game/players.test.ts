@@ -1,10 +1,39 @@
 import { describe, expect, it } from 'vitest';
-import { countGraphemes, firstGrapheme, normalizeName, validateName, type Player } from './players';
+import { countGraphemes, firstGrapheme, movePlayer, normalizeName, validateName, type Player } from './players';
 
 const roster: Player[] = [
   { id: '1', name: 'דנה' },
   { id: '2', name: 'Tom' },
 ];
+
+describe('movePlayer', () => {
+  const four: Player[] = ['a', 'b', 'c', 'd'].map((id) => ({ id, name: id.toUpperCase() }));
+  const ids = (list: readonly Player[]) => list.map((p) => p.id);
+
+  it('moves a player down, closing the gap behind them', () => {
+    expect(ids(movePlayer(four, 'a', 2))).toEqual(['b', 'c', 'a', 'd']);
+  });
+
+  it('moves a player up', () => {
+    expect(ids(movePlayer(four, 'd', 1))).toEqual(['a', 'd', 'b', 'c']);
+  });
+
+  it('moves to either end', () => {
+    expect(ids(movePlayer(four, 'c', 0))).toEqual(['c', 'a', 'b', 'd']);
+    expect(ids(movePlayer(four, 'a', 3))).toEqual(['b', 'c', 'd', 'a']);
+  });
+
+  it('clamps out-of-range targets instead of dropping anyone', () => {
+    expect(ids(movePlayer(four, 'c', -5))).toEqual(['c', 'a', 'b', 'd']);
+    expect(ids(movePlayer(four, 'b', 99))).toEqual(['a', 'c', 'd', 'b']);
+  });
+
+  it('returns the same array when nothing would change', () => {
+    expect(movePlayer(four, 'b', 1)).toBe(four);
+    expect(movePlayer(four, 'missing', 0)).toBe(four);
+    expect(movePlayer([], 'a', 0)).toEqual([]);
+  });
+});
 
 describe('validateName', () => {
   it('trims and collapses whitespace', () => {

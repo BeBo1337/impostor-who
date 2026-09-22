@@ -1,7 +1,7 @@
 import { DEFAULT_CATEGORY_IDS } from '../data/categories';
 import type { CategoryId } from '../data/types';
 import type { CustomWord } from './customWords';
-import type { Player } from './players';
+import { movePlayer, type Player } from './players';
 import { clampImpostorCount } from './rules';
 
 export interface SetupState {
@@ -16,6 +16,7 @@ export type SetupAction =
   | { readonly type: 'ADD_PLAYER'; readonly player: Player }
   | { readonly type: 'RENAME_PLAYER'; readonly id: string; readonly name: string }
   | { readonly type: 'REMOVE_PLAYER'; readonly id: string }
+  | { readonly type: 'MOVE_PLAYER'; readonly id: string; readonly toIndex: number }
   | { readonly type: 'SET_CATEGORIES'; readonly categoryIds: readonly CategoryId[] }
   | { readonly type: 'SET_IMPOSTOR_COUNT'; readonly count: number }
   | { readonly type: 'ADD_CUSTOM_WORD'; readonly word: CustomWord }
@@ -58,6 +59,12 @@ export function setupReducer(state: SetupState, action: SetupAction): SetupState
         // Fewer players can lower the maximum, so the count is clamped automatically.
         impostorCount: clampImpostorCount(state.impostorCount, players.length),
       };
+    }
+    case 'MOVE_PLAYER': {
+      // Reordering never changes who is playing, so the impostor count is untouched.
+      const players = movePlayer(state.players, action.id, action.toIndex);
+      if (players === state.players) return state;
+      return { ...state, players };
     }
     case 'SET_CATEGORIES': {
       return { ...state, categoryIds: withCustomRule(action.categoryIds, state.customWords) };
